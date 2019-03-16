@@ -1,6 +1,8 @@
+#ifndef MAP_H
+#define MAP_H
 
 #include <iostream>
-#include "include/Enums.h"
+#include "../include/Enums.h"
 
 class Map{
 
@@ -10,8 +12,9 @@ class Map{
   int area;
 
 public:
-  Map(Size size, Difficulty difficulty)
-  :size(size), difficulty(difficulty);
+  Map(Size size, Difficulty difficulty);
   ~Map();
   void destroyTile();
-}
+};
+
+#endif

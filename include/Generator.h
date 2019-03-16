@@ -1,6 +1,8 @@
+#ifndef GENERATOR_H
+#define GENERATOR_H
 
 #include <iostream>
-#include "include/Enums.h"
+#include "../include/Enums.h"
 
 
 class Generator{
@@ -15,3 +17,5 @@ public:
   Map generateMap();
   Map regenerateMap();
 }
+
+#endif
