@@ -15,6 +15,7 @@ public:
   Map(Size size, Difficulty difficulty);
   ~Map();
   void destroyTile();
+  void printMap();
 };
 
 #endif

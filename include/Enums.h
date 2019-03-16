@@ -7,5 +7,7 @@ enum Size{SMALL=5, MEDIUM=10, LARGE=15};
 typedef enum Size Size;
 enum Difficulty{EASY, NORMAL, HARD};
 typedef enum Difficulty Difficulty;
+enum Direction{DOWN,RIGHT,UP,LEFT};
+typedef enum Direction Direction;
 
 #endif

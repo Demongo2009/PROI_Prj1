@@ -1,17 +1,26 @@
 
 CC = g++
 CFLAGS = -Wall -g
-TARGET = animals
-SOURCES = Main.cpp
-OBJECTS = Main.o
+TARGET = main
+TTARGET = testing
+SOURCESDIR = src
+BUILDDIR = build
+INCLUDEDIR = include
+SOURCES = Generator.cpp Map.cpp
+OBJECTS = Generator.o Map.o
 
 
-$TARGET: Main.o
-	$(CC) $(CFLAGS)  build/$(OBJECTS) -o bin/$(TARGET)
+$TARGET: $(BUILDDIR)/Map.o $(BUILDDIR)/Generator.o 
+	$(CC) $(CFLAGS)  build/*.o -o bin/$(TTARGET)
 
-Main.o:
-	$(CC) $(CFLAGS) -c src/Main.cpp -o build/Main.o
+$(BUILDDIR)/Map.o: $(INCLUDEDIR)/Map.h $(INCLUDEDIR)/Enums.h
+	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Map.cpp -o $(BUILDDIR)/Map.o
+
+$(BUILDDIR)/Generator.o: $(INCLUDEDIR)/Generator.h $(INCLUDEDIR)/Enums.h $(INCLUDEDIR)/Map.h
+	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Generator.cpp -o $(BUILDDIR)/Generator.o
+
+
 
 .PHONY:clean
 clean:
-	-rm build/*.o 
+	-rm $(BUILDDIR)/*.o
