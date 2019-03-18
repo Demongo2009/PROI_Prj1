@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-enum Size{SMALL=5, MEDIUM=10, LARGE=15};
+enum Size{SMALL=10, MEDIUM=20, LARGE=30};
 typedef enum Size Size;
 enum Difficulty{EASY, NORMAL, HARD};
 typedef enum Difficulty Difficulty;
