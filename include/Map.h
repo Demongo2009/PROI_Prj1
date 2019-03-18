@@ -6,12 +6,12 @@
 
 class Map{
 
-  char** board;
   Size size;
   Difficulty difficulty;
   int area;
 
 public:
+  char** board;
   Map(Size size, Difficulty difficulty);
   ~Map();
   void destroyTile();

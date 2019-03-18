@@ -10,16 +10,19 @@ class Generator{
 
   Size size;
   Difficulty difficulty;
-  Map map;
+  Map* map;
 
   void initializeMap();
   void generateRoad();
-  void makeSingleRoad();
+  void makeSingleRoad(int,int, Direction);
 
 public:
-  Generator(Size, Difficulty);
-  Map generateMap();
-  Map regenerateMap();
+  Generator(Size size, Difficulty difficulty)
+  :size(size)
+  ,difficulty(difficulty)
+  ,map(nullptr){}
+  Map* generateMap();
+  Map* regenerateMap();
 };
 
 #endif

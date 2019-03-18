@@ -1,67 +1,80 @@
 
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <random>
 #include "../include/Generator.h"
 #include "../include/Enums.h"
 #include "../include/Map.h"
 
-Generator::Generator(Size size, Difficulty difficulty){
-  this->size = size;
-  this->difficulty = difficulty;
-  initializeMap();
-}
+// Generator::Generator(Size size, Difficulty difficulty){
+//   this->size = size;
+//   this->difficulty = difficulty;
+//   map = new Map(size, difficulty);
+// }
 
-Map Generator::generateMap(){
+std::random_device rD;
+std::mt19937 gen(rD());
+
+
+Map* Generator::generateMap(){
   initializeMap();
   generateRoad();
+  generateRoad();
+  generateRoad();
+  return map;
 }
 
 void Generator::generateRoad(){
-  std::srand(std::time(nullptr));
-
-  int maxEnumeratedBorder = size*2 + (size-2)*2;
-  int startingPoint = std::rand()%maxEnumeratedBorder;
-  int singleBorderIndex = startingPoint%size;
-  switch (startingPoint%4) {
-    case 0:
-      makeSingleRoad(singleBorderIndex,0,DOWN);
+  // int maxEnumeratedBorder = size*2 + (size-2)*2;
+  // std::uniform_int_distribution<> dis03(0,3);
+  // int startingWall = dis03(gen);
+  //
+  // std::uniform_int_distribution<> dis0size01(0,size-1);
+  std::uniform_int_distribution<> randomStartingPoint(0,size/2-1);
+  int xStarting = randomStartingPoint(gen);
+  int yStarting = randomStartingPoint(gen);
+  std::uniform_int_distribution<> randomDirection(0,3);
+  int startingDirection = randomDirection(gen);
+  switch (startingDirection) {
+    case DOWN:
+      makeSingleRoad(xStarting,yStarting,DOWN);
       break;
-    case 1:
-      makeSingleRoad(size-1, singleBorderIndex,RIGHT);
+    case RIGHT:
+      makeSingleRoad(xStarting,yStarting,RIGHT);
       break;
-    case 2:
-      makeSingleRoad(singleBorderIndex,size-1,UP);
+    case UP:
+      makeSingleRoad(xStarting,yStarting,UP);
       break;
-    case 3:
-      makeSingleRoad(0,singleBorderIndex,LEFT);
+    case LEFT:
+      makeSingleRoad(xStarting,yStarting,LEFT);
       break;
   }
 
 }
 
-void Generator::makeSingleRoad(int xNotChecked, int yNotChecked, Direction cameFromDirection){
+void Generator::makeSingleRoad(int xNotChecked, int yNotChecked, Direction direction){
   if( xNotChecked<0 || xNotChecked>=size || yNotChecked<0 || yNotChecked>=size){
     return;
   }
-  board[yNotChecked][xNotChecked] = 'D';
-  int whichDirectionNext = std::rand()%4;
+  map->board[yNotChecked][xNotChecked] = 'D';
+
+  std::uniform_int_distribution<> dis03(0,3);
+  int whichDirectionNext = dis03(gen);
   if(cameFromDirection == whichDirectionNext){
     whichDirectionNext= (whichDirectionNext+2)%4;
   }
 
   switch (whichDirectionNext) {
     case DOWN:
-      makeSingleRoad(yNotChecked-1,xNotChecked,UP);
+      makeSingleRoad(xNotChecked,yNotChecked-1,UP);
       break;
     case RIGHT:
-      makeSingleRoad(yNotChecked,xNotChecked+1,LEFT)
+      makeSingleRoad(xNotChecked+1,yNotChecked,LEFT);
       break;
     case UP:
-      makeSingleRoad(yNotChecked+1,xNotChecked,DOWN);
+      makeSingleRoad(xNotChecked,yNotChecked+1,DOWN);
       break;
     case LEFT:
-      makeSingleRoad(yNotChecked,xNotChecked-1,RIGHT);
+      makeSingleRoad(xNotChecked-1,yNotChecked,RIGHT);
       break;
   }
 

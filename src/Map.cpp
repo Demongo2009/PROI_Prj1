@@ -37,13 +37,13 @@ void Map::printMap(){
     std::cout<<'Z';
   }
   std::cout<<std::endl;
-  
+
   for(int i=0; i<size; ++i){
     std::cout<<'Z';
     for(int j=0; j<size; ++j){
-      std::cout<<board[i][j]<<std::endl;
+      std::cout<<board[i][j];
     }
-    std::cout<<'Z';
+    std::cout<<'Z'<<std::endl;
   }
 
   for(int i=0; i<size+2; ++i){
