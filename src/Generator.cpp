@@ -89,7 +89,7 @@ void Generator::makeSingleTunnel(int& xNotChecked,int& yNotChecked,
   if(xNotChecked<0 || xNotChecked>=size || yNotChecked<0 ||yNotChecked>=size){
     return;
   }
-  map->board[yNotChecked][xNotChecked].change;
+  map->board[yNotChecked][xNotChecked].changeTileType(ROAD);
   takeStep(xNotChecked,yNotChecked,direction);
 
   makeSingleTunnel(xNotChecked,yNotChecked,stepsLeft,direction);

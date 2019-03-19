@@ -2,8 +2,8 @@
 #define MAP_H
 
 #include <iostream>
-#include "../include/Enums.h"
-#include "../include/Tile.h"
+#include "Enums.h"
+#include "Tile.h"
 
 class Map{
 
