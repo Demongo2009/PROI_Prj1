@@ -4,52 +4,57 @@
 #include "../include/Generator.h"
 #include "../include/Enums.h"
 #include "../include/Map.h"
+#include "../include/Tile.h"
 
-// Generator::Generator(Size size, Difficulty difficulty){
-//   this->size = size;
-//   this->difficulty = difficulty;
-//   map = new Map(size, difficulty);
-// }
 
 std::random_device rD;
 std::mt19937 gen(rD());
 
+Generator::Generator(Size size, Difficulty difficulty){
+  this->size = size;
+  this->difficulty = difficulty;
+  this->map = nullptr;
+  switch (size) {
+    case SMALL:
+      this->tunnelsForSize = 3;
+      this->stepsForSizeMax = 5;
+      this->roadsForSize = 1;
+      break;
+    case MEDIUM:
+      this->tunnelsForSize = 5;
+      this->stepsForSizeMax = 6;
+      this->roadsForSize = 1;
+      break;
+    case LARGE:
+      this->tunnelsForSize = 10;
+      this->stepsForSizeMax = 5;
+      this->roadsForSize = 1;
+      break;
+  }
+}
 
 Map* Generator::generateMap(){
   initializeMap();
   for(int i=0; i<roadsForSize; ++i){
     generateRoad();
   }
+  generateTiles();
   return map;
 }
 
+void Generator::generateTiles(){
+
+}
+
 void Generator::generateRoad(){
-  // int maxEnumeratedBorder = size*2 + (size-2)*2;
-  // std::uniform_int_distribution<> dis03(0,3);
-  // int startingWall = dis03(gen);
-  //
-  // std::uniform_int_distribution<> dis0size01(0,size-1);
   std::uniform_int_distribution<> randomStartingPoint(0,size-1);
   int xStarting = randomStartingPoint(gen);
   int yStarting = randomStartingPoint(gen);
   std::uniform_int_distribution<> randomDirection(0,3);
   Direction startingDirection = (Direction)randomDirection(gen);
+
   int tunnelsNumber = tunnelsForSize;
   makeSingleRoad(xStarting,yStarting,tunnelsNumber,startingDirection);
-  // switch (startingDirection) {
-  //   case DOWN:
-  //     break;
-  //   case RIGHT:
-  //     makeSingleRoad(xStarting,yStarting,tunnelsNumber,RIGHT);
-  //     break;
-  //   case UP:
-  //     makeSingleRoad(xStarting,yStarting,tunnelsNumber,UP);
-  //     break;
-  //   case LEFT:
-  //     makeSingleRoad(xStarting,yStarting,tunnelsNumber,LEFT);
-  //     break;
-  // }
-
 }
 
 void Generator::makeSingleRoad(int xNotChecked, int yNotChecked,
@@ -72,19 +77,6 @@ void Generator::makeSingleRoad(int xNotChecked, int yNotChecked,
   }
 
   makeSingleRoad(xNotChecked,yNotChecked,tunnelsLeft,whichDirectionNext);
-  // switch (whichDirectionNext) {
-  //   case DOWN:
-  //     break;
-  //   case RIGHT:
-  //     makeSingleRoad(xNotChecked,yNotChecked,tunnelsLeft,RIGHT);
-  //     break;
-  //   case UP:
-  //     makeSingleRoad(xNotChecked,yNotChecked,tunnelsLeft,UP);
-  //     break;
-  //   case LEFT:
-  //     makeSingleRoad(xNotChecked,yNotChecked,tunnelsLeft,LEFT);
-  //     break;
-  // }
   return;
 }
 
@@ -94,12 +86,11 @@ void Generator::makeSingleTunnel(int& xNotChecked,int& yNotChecked,
     return;
   }
   --stepsLeft;
-  if(xNotChecked<0||xNotChecked>=size||yNotChecked<0||yNotChecked>=size){
+  if(xNotChecked<0 || xNotChecked>=size || yNotChecked<0 ||yNotChecked>=size){
     return;
   }
-  map->board[yNotChecked][xNotChecked] = 'D';
+  map->board[yNotChecked][xNotChecked].change;
   takeStep(xNotChecked,yNotChecked,direction);
-  // direction = correctDirection(xNotChecked,yNotChecked,direction);
 
   makeSingleTunnel(xNotChecked,yNotChecked,stepsLeft,direction);
   return;

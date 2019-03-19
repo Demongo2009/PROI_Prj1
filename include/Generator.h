@@ -4,10 +4,10 @@
 #include <iostream>
 #include "../include/Enums.h"
 #include "../include/Map.h"
+#include "../include/Tile.h"
 
 
 class Generator{
-
   Size size;
   Difficulty difficulty;
   Map* map;
@@ -17,35 +17,13 @@ class Generator{
 
   void initializeMap();
   void generateRoad();
+  void generateTiles();
   void makeSingleRoad(int,int,int, Direction);
   void makeSingleTunnel(int&,int&,int, Direction);
   // Direction correctDirection(int&,int&,Direction);
   void takeStep(int&,int&,Direction);
-
-
 public:
-  Generator(Size size, Difficulty difficulty)
-  :size(size)
-  ,difficulty(difficulty)
-  ,map(nullptr){
-    switch (size) {
-      case SMALL:
-        this->tunnelsForSize = 3;
-        this->stepsForSizeMax = 5;
-        this->roadsForSize = 3;
-        break;
-      case MEDIUM:
-        this->tunnelsForSize = 5;
-        this->stepsForSizeMax = 6;
-        this->roadsForSize = 5;
-        break;
-      case LARGE:
-        this->tunnelsForSize = 10;
-        this->stepsForSizeMax = 5;
-        this->roadsForSize = 7;
-        break;
-    }
-  }
+  Generator(Size size, Difficulty difficulty);
   Map* generateMap();
   Map* regenerateMap();
 };
