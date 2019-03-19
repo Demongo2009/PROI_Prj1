@@ -17,9 +17,9 @@ std::mt19937 gen(rD());
 
 Map* Generator::generateMap(){
   initializeMap();
-  generateRoad();
-  generateRoad();
-  generateRoad();
+  for(int i=0; i<roadsForSize; ++i){
+    generateRoad();
+  }
   return map;
 }
 
@@ -29,7 +29,7 @@ void Generator::generateRoad(){
   // int startingWall = dis03(gen);
   //
   // std::uniform_int_distribution<> dis0size01(0,size-1);
-  std::uniform_int_distribution<> randomStartingPoint(0,size/2-1);
+  std::uniform_int_distribution<> randomStartingPoint(0,size-1);
   int xStarting = randomStartingPoint(gen);
   int yStarting = randomStartingPoint(gen);
   std::uniform_int_distribution<> randomDirection(0,3);
@@ -65,13 +65,13 @@ void Generator::makeSingleRoad(int xNotChecked, int yNotChecked,
   makeSingleTunnel(xNotChecked,yNotChecked,randomStepsNumber(gen),direction);
 
   std::uniform_int_distribution<> dis03(0,3);
-  int whichDirectionNext = dis03(gen);
-  int cameFormDirection = (direction+2)%4;
+  Direction whichDirectionNext = (Direction)dis03(gen);
+  Direction cameFormDirection =(Direction)((direction+2)%4);
   if(cameFormDirection == whichDirectionNext){
-    whichDirectionNext = (whichDirectionNext+2)%4;
+    whichDirectionNext = (Direction)((whichDirectionNext+2)%4);
   }
 
-  makeSingleRoad(xNotChecked,yNotChecked,tunnelsLeft,direction);
+  makeSingleRoad(xNotChecked,yNotChecked,tunnelsLeft,whichDirectionNext);
   // switch (whichDirectionNext) {
   //   case DOWN:
   //     break;
@@ -88,53 +88,75 @@ void Generator::makeSingleRoad(int xNotChecked, int yNotChecked,
   return;
 }
 
-void Generator::makeSingleTunnel(int &xNotChecked,int &yNotChecked,
+void Generator::makeSingleTunnel(int& xNotChecked,int& yNotChecked,
    int stepsLeft, Direction direction){
   if(stepsLeft==0){
     return;
   }
   --stepsLeft;
+  if(xNotChecked<0||xNotChecked>=size||yNotChecked<0||yNotChecked>=size){
+    return;
+  }
   map->board[yNotChecked][xNotChecked] = 'D';
-  direction = correctDirection(xNotChecked,yNotChecked,direction);
+  takeStep(xNotChecked,yNotChecked,direction);
+  // direction = correctDirection(xNotChecked,yNotChecked,direction);
 
   makeSingleTunnel(xNotChecked,yNotChecked,stepsLeft,direction);
   return;
 }
 
-Direction Generator::correctDirection(int &xNotChecked,int &yNotChecked,
-  Direction direction){
+void Generator::takeStep(int& xNotChecked,int& yNotChecked,
+   Direction direction){
   switch (direction) {
     case DOWN:
-      if((yNotChecked-1)<0){
-        return correctDirection(xNotChecked,yNotChecked,RIGHT);
-      }else{
-        --yNotChecked;
-      }
+      --yNotChecked;
       break;
     case RIGHT:
-      if((xNotChecked+1)>=size){
-        return correctDirection(xNotChecked,yNotChecked,UP);
-      }else{
-        ++xNotChecked;
-      }
+      ++xNotChecked;
       break;
     case UP:
-      if((yNotChecked+1)>=size){
-        return correctDirection(xNotChecked,yNotChecked,LEFT);
-      }else{
-        ++yNotChecked;
-      }
+      ++yNotChecked;
       break;
     case LEFT:
-      if((xNotChecked-1)<0){
-        return correctDirection(xNotChecked,yNotChecked,DOWN);
-      }else{
-        --xNotChecked;
-      }
+      --xNotChecked;
       break;
   }
-  return direction;
 }
+
+// Direction Generator::correctDirection(int &xNotChecked,int &yNotChecked,
+//   Direction direction){
+//   switch (direction) {
+//     case DOWN:
+//       if((yNotChecked-1)<0){
+//         return correctDirection(xNotChecked,yNotChecked,RIGHT);
+//       }else{
+//         --yNotChecked;
+//       }
+//       break;
+//     case RIGHT:
+//       if((xNotChecked+1)>=size){
+//         return correctDirection(xNotChecked,yNotChecked,UP);
+//       }else{
+//         ++xNotChecked;
+//       }
+//       break;
+//     case UP:
+//       if((yNotChecked+1)>=size){
+//         return correctDirection(xNotChecked,yNotChecked,LEFT);
+//       }else{
+//         ++yNotChecked;
+//       }
+//       break;
+//     case LEFT:
+//       if((xNotChecked-1)<0){
+//         return correctDirection(xNotChecked,yNotChecked,DOWN);
+//       }else{
+//         --xNotChecked;
+//       }
+//       break;
+//   }
+//   return direction;
+// }
 
 
 

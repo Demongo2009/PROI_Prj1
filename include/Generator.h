@@ -13,12 +13,14 @@ class Generator{
   Map* map;
   int tunnelsForSize;
   int stepsForSizeMax;
+  int roadsForSize;
 
   void initializeMap();
   void generateRoad();
   void makeSingleRoad(int,int,int, Direction);
   void makeSingleTunnel(int&,int&,int, Direction);
-  Direction correctDirection(int&,int&,Direction);
+  // Direction correctDirection(int&,int&,Direction);
+  void takeStep(int&,int&,Direction);
 
 
 public:
@@ -28,16 +30,19 @@ public:
   ,map(nullptr){
     switch (size) {
       case SMALL:
-        tunnelsForSize = 3;
-        stepsForSizeMax = 5;
+        this->tunnelsForSize = 3;
+        this->stepsForSizeMax = 5;
+        this->roadsForSize = 3;
         break;
       case MEDIUM:
-        tunnelsForSize = 5;
-        stepsForSizeMax = 6;
+        this->tunnelsForSize = 5;
+        this->stepsForSizeMax = 6;
+        this->roadsForSize = 5;
         break;
       case LARGE:
-        tunnelsForSize = 10;
-        stepsForSizeMax = 5;
+        this->tunnelsForSize = 10;
+        this->stepsForSizeMax = 5;
+        this->roadsForSize = 7;
         break;
     }
   }
