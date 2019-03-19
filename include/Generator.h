@@ -18,6 +18,7 @@ class Generator{
   void generateRoad();
   void makeSingleRoad(int,int,int, Direction);
   void makeSingleTunnel(int&,int&,int, Direction);
+  Direction correctDirection(int&,int&,Direction);
 
 
 public:

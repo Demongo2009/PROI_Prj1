@@ -33,7 +33,7 @@ void Generator::generateRoad(){
   int xStarting = randomStartingPoint(gen);
   int yStarting = randomStartingPoint(gen);
   std::uniform_int_distribution<> randomDirection(0,3);
-  int startingDirection = randomDirection(gen);
+  Direction startingDirection = (Direction)randomDirection(gen);
   int tunnelsNumber = tunnelsForSize;
   makeSingleRoad(xStarting,yStarting,tunnelsNumber,startingDirection);
   // switch (startingDirection) {
@@ -95,38 +95,45 @@ void Generator::makeSingleTunnel(int &xNotChecked,int &yNotChecked,
   }
   --stepsLeft;
   map->board[yNotChecked][xNotChecked] = 'D';
-  switch (direction) {
-    case DOWN:
-    --yNotChecked;
-    break;
-    case RIGHT:
-    ++xNotChecked;
-    break;
-    case UP:
-    ++yNotChecked;
-    break;
-    case LEFT:
-    --xNotChecked;
-    break;
-  }
-  while( xNotChecked<0 || xNotChecked>=size || yNotChecked<0 || yNotChecked>=size){
-    switch (direction) {
-      case DOWN:
-      --yNotChecked;
-      break;
-      case RIGHT:
-      ++xNotChecked;
-      break;
-      case UP:
-      ++yNotChecked;
-      break;
-      case LEFT:
-      --xNotChecked;
-      break;
-    }
-  }
+  direction = correctDirection(xNotChecked,yNotChecked,direction);
+
   makeSingleTunnel(xNotChecked,yNotChecked,stepsLeft,direction);
   return;
+}
+
+Direction Generator::correctDirection(int &xNotChecked,int &yNotChecked,
+  Direction direction){
+  switch (direction) {
+    case DOWN:
+      if((yNotChecked-1)<0){
+        return correctDirection(xNotChecked,yNotChecked,RIGHT);
+      }else{
+        --yNotChecked;
+      }
+      break;
+    case RIGHT:
+      if((xNotChecked+1)>=size){
+        return correctDirection(xNotChecked,yNotChecked,UP);
+      }else{
+        ++xNotChecked;
+      }
+      break;
+    case UP:
+      if((yNotChecked+1)>=size){
+        return correctDirection(xNotChecked,yNotChecked,LEFT);
+      }else{
+        ++yNotChecked;
+      }
+      break;
+    case LEFT:
+      if((xNotChecked-1)<0){
+        return correctDirection(xNotChecked,yNotChecked,DOWN);
+      }else{
+        --xNotChecked;
+      }
+      break;
+  }
+  return direction;
 }
 
 
