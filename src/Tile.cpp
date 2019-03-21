@@ -2,7 +2,7 @@
 #include "../include/Tile.h"
 #include "../include/Enums.h"
 
-TileType Tile::getType(){
+TileType Tile::getTileType(){
   return tileType;
 }
 

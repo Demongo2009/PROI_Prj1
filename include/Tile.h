@@ -9,39 +9,39 @@ class Tile{
 public:
   Tile():tileType(EMPTY){};
   Tile(TileType tileType):tileType(tileType){};
-  TileType getType();
+  TileType getTileType();
   void changeTileType(TileType);
 
-  friend std::ostream& operator<<(std::ostream& os, const Tile& t);
-};
-
-std::ostream& operator<<(std::ostream& os, const Tile& t){
-  char c;
-  switch (t.tileType) {
-    case EMPTY:
+  // friend std::ostream& operator<<(std::ostream& os, const Tile& t);
+  friend std::ostream& operator<<(std::ostream& os, const Tile& t){
+    char c;
+    switch (t.tileType) {
+      case EMPTY:
       c = ' ';
       break;
-    case ROAD:
+      case ROAD:
       c = 'D';
       break;
-    case BUSHES:
+      case BUSHES:
       c = '#';
       break;
-    case ICE:
+      case ICE:
       c = '@';
       break;
-    case WATER:
+      case WATER:
       c = 'M';
       break;
-    case BRICKS:
+      case BRICKS:
       c = 'H';
       break;
-    case IRON:
+      case IRON:
       c = 'Z';
       break;
+    }
+    os << c;
+    return os;
   }
-  os << c;
-  return os;
-}
+};
+
 
 #endif
