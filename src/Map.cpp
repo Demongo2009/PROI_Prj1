@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "../include/Map.h"
 #include "../include/Enums.h"
+#include "../include/Tile.h"
 
 
 Map::Map(Size size, Difficulty difficulty){
@@ -10,15 +11,15 @@ Map::Map(Size size, Difficulty difficulty){
   this->difficulty = difficulty;
   area = size*size;
 
-  board = (char**)std::malloc(size * sizeof(char*));
+  board = (Tile**)std::malloc(size * sizeof(Tile*));
 
   for(int i=0; i<size; ++i){
-    board[i] = (char*)std::malloc(size * sizeof(char));
+    board[i] = (Tile*)std::malloc(size * sizeof(Tile));
   }
 
   for(int i=0; i<size; ++i){
     for(int j=0; j<size; ++j){
-      board[i][j] = ' ';
+      board[i][j] = Tile();
     }
   }
 }

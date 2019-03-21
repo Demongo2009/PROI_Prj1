@@ -2,7 +2,8 @@
 #define MAP_H
 
 #include <iostream>
-#include "../include/Enums.h"
+#include "Enums.h"
+#include "Tile.h"
 
 class Map{
 
@@ -11,7 +12,7 @@ class Map{
   int area;
 
 public:
-  char** board;
+  Tile** board;
   Map(Size size, Difficulty difficulty);
   ~Map();
   void destroyTile();

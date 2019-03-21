@@ -9,5 +9,7 @@ enum Difficulty{EASY, NORMAL, HARD};
 typedef enum Difficulty Difficulty;
 enum Direction{DOWN,RIGHT,UP,LEFT};
 typedef enum Direction Direction;
+enum TileType{EMPTY,ROAD,BUSHES,ICE,WATER,BRICKS,IRON};
+typedef enum TileType TileType;
 
 #endif
