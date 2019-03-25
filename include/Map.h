@@ -2,21 +2,23 @@
 #define MAP_H
 
 #include <iostream>
+#include <string>
 #include "Enums.h"
 #include "Tile.h"
 
 class Map{
 
+  Tile** board;
   Size size;
   Difficulty difficulty;
   int area;
 
 public:
-  Tile** board;
   Map(Size size, Difficulty difficulty);
   ~Map();
   void destroyTile();
-  void printMap();
+  std::string toString();
+  void changeTile(int,int,TileType);
 };
 
 #endif

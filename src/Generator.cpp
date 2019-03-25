@@ -67,14 +67,21 @@ Generator::Generator(Size size, Difficulty difficulty){
       this->watersForSize = 3;
       break;
   }
+  switch (difficulty) {
+    case EASY:
+      break;
+    case NORMAL:
+      this->icesForSize+=3;
+      this->watersForSize+=3;
+    case HARD:
+      this->icesForSize+=5;
+      this->icesForSize+=5;            
+  }
 }
 
 Map* Generator::generateMap(){
   initializeMap();
   generateTiles();
-  // for(int i=0; i<roadsForSize; ++i){
-  //   generateRoad();
-  // }
   return map;
 }
 
@@ -96,15 +103,7 @@ void Generator::generateTiles(){
 
 
 void Generator::generateTileGroup(TileType tileType, int linesForSize, int stepsForSizeMax){
-  // std::uniform_int_distribution<> randomPoint(0,size-1);
-  // int xPoint = randomPoint(gen);
-  // int yPoint = randomPoint(gen);
-  //
-  // if(map->board[yPoint][xPoint].getTileType() != EMPTY){
-  //   generateTile(tileType);
-  // }else{
-  //   map->board[yPoint][xPoint].changeTileType(tileType);
-  // }
+  // create one random point and random direction then start making polyline
   std::uniform_int_distribution<> randomStartingPoint(0,size-1);
   int xStarting = randomStartingPoint(gen);
   int yStarting = randomStartingPoint(gen);
@@ -115,6 +114,7 @@ void Generator::generateTileGroup(TileType tileType, int linesForSize, int steps
 }
 
 void Generator::generateRoad(){
+  //generate tile group but focussed on road
   std::uniform_int_distribution<> randomStartingPoint(0,size-1);
   int xStarting = randomStartingPoint(gen);
   int yStarting = randomStartingPoint(gen);
@@ -126,6 +126,7 @@ void Generator::generateRoad(){
 
 void Generator::makeSinglePolyline(int xNotChecked, int yNotChecked,
    int linesLeft,int stepsForSizeMax, Direction direction,TileType tileType){
+     //recusively make linesleft amount of lines
   if(linesLeft==0){
     return;
   }
@@ -133,9 +134,12 @@ void Generator::makeSinglePolyline(int xNotChecked, int yNotChecked,
   if( xNotChecked<0 || xNotChecked>=size || yNotChecked<0 || yNotChecked>=size){
     return;
   }
+  //random amount of steps
   std::uniform_int_distribution<> randomStepsNumber(1,stepsForSizeMax);
+  //only one line
   makeSingleLine(xNotChecked,yNotChecked,randomStepsNumber(gen),direction,tileType);
 
+  //random direction if previous direction was selected select opposite
   std::uniform_int_distribution<> dis03(0,3);
   Direction whichDirectionNext = (Direction)dis03(gen);
   Direction cameFormDirection =(Direction)((direction+2)%4);
@@ -156,32 +160,16 @@ void Generator::makeSingleLine(int& xNotChecked,int& yNotChecked,
   if(xNotChecked<0 || xNotChecked>=size || yNotChecked<0 ||yNotChecked>=size){
     return;
   }
-  map->board[yNotChecked][xNotChecked].changeTileType(tileType);
-  // takeStep(xNotChecked,yNotChecked,direction);
+  map->changeTile(xNotChecked,yNotChecked,tileType);
+
+  //if not in the board change direction
   Direction nextDirection = correctDirection(xNotChecked,yNotChecked,direction);
 
-  // makeSingleLine(xNotChecked,yNotChecked,stepsLeft,direction);
   makeSingleLine(xNotChecked,yNotChecked,stepsLeft,nextDirection,tileType);
   return;
 }
 
-// void Generator::takeStep(int& xNotChecked,int& yNotChecked,
-//    Direction direction){
-//   switch (direction) {
-//     case DOWN:
-//       --yNotChecked;
-//       break;
-//     case RIGHT:
-//       ++xNotChecked;
-//       break;
-//     case UP:
-//       ++yNotChecked;
-//       break;
-//     case LEFT:
-//       --xNotChecked;
-//       break;
-//   }
-// }
+
 
 Direction Generator::correctDirection(int &xNotChecked,int &yNotChecked,
   Direction direction){
