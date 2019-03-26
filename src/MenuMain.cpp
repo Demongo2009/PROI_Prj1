@@ -1,8 +1,17 @@
 
 #include <iostream>
+#include "../include/MenuMain.h"
+#include "../include/Enums.h"
+#include "../include/Generator.h"
+#include "../include/Editor.h"
+#include <cstdarg>
 #define DIFFICULTY_AMOUNT 3
 #define EDITOR_OPTIONS 3
 #define TILE_TYPE_AMOUNT 5
+
+MenuMain::MenuMain(int argAmount, char[100] ...):Menu(argAmount, (va_start(ap,argAmount),ap)){
+
+}
 
 void MenuMain::executePointerCommand(){
   switch (pointer) {
@@ -10,7 +19,7 @@ void MenuMain::executePointerCommand(){
       generate();
       break;
     case 1:
-      exit();
+      exit(0);
       break;
   }
 }
@@ -19,13 +28,35 @@ void MenuMain::generate(){
   Difficulty generatorDifficulty = selectDifficulty();
   Size generatorSize = selectSize();
 
-  Generator generator = Generator(generatorSize,generatorDifficulty)
-  Map map* = generator.generateMap();
+  Generator generator = Generator(generatorSize,generatorDifficulty);
+  Map* map = generator.generateMap();
 
-  if(wantToEdit()){
+  if(wantToEdit(map)){
     editMap(map);
   }else{
-    exit();
+    exit(0);
+  }
+}
+
+bool MenuMain::wantToEdit(Map* map){
+  std::cout<<map->toString();
+  std::cout<<"Do you want to edit map?\n";
+  Menu yesNo = Menu(2,
+    "[1] Yes",
+    "[2] No");
+
+  int option;
+  readInt(option);
+  yesNo.pointerMoveTo(option-1);
+  std::cout<<yesNo.toString();
+
+  switch(yesNo.getPointer()){
+    case 0:
+      return true;
+      break;
+    case 1:
+      return false;
+      break;
   }
 }
 
@@ -39,14 +70,14 @@ void MenuMain::editMap(Map* map){
     "[3] Quit editing and exit");
   while(1){
     std::cout<<editorMenu.toString();
-    std::cout<<"Selected tile ["<<pointerX<<", "<<pointerY<<"]\n";
+    std::cout<<"Selected tile ["<<editor.getPointerX()<<", "<<editor.getPointerY()<<"]\n";
 
     int option;
     readInt(option);
     editorMenu.pointerMoveTo(option-1);
     std::cout<<editorMenu.toString();
 
-    switch (option-1) {
+    switch (editorMenu.getPointer()) {
       case 0:
         int x;
         readInt(x);
@@ -55,31 +86,50 @@ void MenuMain::editMap(Map* map){
         editor.setPointerTo(x,y);
         break;
       case 1:
-        std::cout<<"Selected tile ["<<pointerX<<", "<<pointerY<<"]\n";
-
-        Menu selectTile = Menu(TILE_TYPE_AMOUNT,
-          "[1] Change to BRICKS",
-          "[2] Change to BUSHES",
-          "[3] Change to ICE",
-          "[4] Change to WATER",
-          "[5] Change to EMPTY");
-        std::cout<<selectTile.toString();
-
-        int option;
-        readInt(option);
-        selectTile.pointerMoveTo(option-1);
-        std::cout<<selectTile.toString();
-        switch (option-1) {
-          case  0:
-            changeTile();
-            break;
-          case 1:
-            changeTile();
-        }
-
+        changeSelectedTile(editor);
+        break;
+      case 2:
+        exit(0);
+        break;
     }
-
+    std::cout<<map->toString();
   }
+}
+
+void MenuMain::changeSelectedTile(Editor editor){
+  std::cout<<"Selected tile ["<<editor.getPointerX()<<", "<<editor.getPointerY()<<"]\n";
+
+  Menu selectTile = Menu(TILE_TYPE_AMOUNT,
+    "[1] Change to BRICKS",
+    "[2] Change to BUSHES",
+    "[3] Change to ICE",
+    "[4] Change to WATER",
+    "[5] Change to EMPTY");
+  std::cout<<selectTile.toString();
+
+  int option;
+  readInt(option);
+  selectTile.pointerMoveTo(option-1);
+  std::cout<<selectTile.toString();
+
+  switch (selectTile.getPointer()) {
+    case  0:
+      editor.changeTile(BRICKS);
+      break;
+    case 1:
+      editor.changeTile(BUSHES);
+      break;
+    case 2:
+      editor.changeTile(ICE);
+      break;
+    case 3:
+      editor.changeTile(WATER);
+      break;
+    case 4:
+      editor.changeTile(EMPTY);
+      break;
+  }
+
 }
 
 Difficulty MenuMain::selectDifficulty(){
@@ -95,7 +145,7 @@ Difficulty MenuMain::selectDifficulty(){
   std::cout<<selectDifficulty.toString();
 
   Difficulty generatorDifficulty;
-  switch (option-1) {
+  switch (selectDifficulty.getPointer()) {
     case 0:
       generatorDifficulty=EASY;
       break;
@@ -122,15 +172,15 @@ Size MenuMain::selectSize(){
   std::cout<<selectSize.toString();
 
   Size generatorSize;
-  switch (option-1) {
+  switch (selectSize.getPointer()) {
     case 0:
-      generatorDifficulty=SMALL;
+      generatorSize=SMALL;
       break;
     case 1:
-      generatorDifficulty=MEDIUM;
+      generatorSize=MEDIUM;
       break;
     case 2:
-      generatorDifficulty=LARGE;
+      generatorSize=LARGE;
       break;
   }
   return generatorSize;

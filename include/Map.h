@@ -19,6 +19,7 @@ public:
   void destroyTile();
   std::string toString();
   void changeTile(int,int,TileType);
+  Size getSize();
 };
 
 #endif

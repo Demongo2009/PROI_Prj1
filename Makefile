@@ -2,18 +2,16 @@
 CC = g++
 CFLAGS = -Wall -g
 TARGET = main
-TTARGET = testing
 SOURCESDIR = src
 BUILDDIR = build
 INCLUDEDIR = include
 SOURCES = Generator.cpp Map.cpp
-OBJECTS = Generator.o Map.o
+OBJECTS = $(BUILDDIR)/Main.o $(BUILDDIR)/Map.o $(BUILDDIR)/Generator.o $(BUILDDIR)/Tile.o $(BUILDDIR)/Menu.o $(BUILDDIR)/MenuMain.o $(BUILDDIR)/Editor.o
 
+$(TARGET): Main.o Map.o Generator.o Tile.o Menu.o MenuMain.o Editor.o
+	$(CC) $(CFLAGS) $(OBJECTS) -o bin/$(TARGET)
 
-$(TTARGET): Main.o Map.o Generator.o Tile.o
-	$(CC) $(CFLAGS) $(BUILDDIR)/Main.o $(BUILDDIR)/Generator.o $(BUILDDIR)/Map.o $(BUILDDIR)/Tile.o -o bin/$(TTARGET)
-
-Main.o: $(INCLUDEDIR)/Generator.h $(INCLUDEDIR)/Enums.h $(INCLUDEDIR)/Map.h
+Main.o: $(INCLUDEDIR)/Menu.h $(INCLUDEDIR)/MenuMain.h
 	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Main.cpp -o $(BUILDDIR)/Main.o
 
 Map.o: $(INCLUDEDIR)/Map.h $(INCLUDEDIR)/Enums.h $(INCLUDEDIR)/Tile.h
@@ -24,6 +22,15 @@ Generator.o: $(INCLUDEDIR)/Generator.h $(INCLUDEDIR)/Enums.h $(INCLUDEDIR)/Map.h
 
 Tile.o: $(INCLUDEDIR)/Tile.h $(INCLUDEDIR)/Enums.h
 	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Tile.cpp -o $(BUILDDIR)/Tile.o
+
+Menu.o: $(INCLUDEDIR)/Menu.h
+	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Menu.cpp -o $(BUILDDIR)/Menu.o
+
+MenuMain.o: $(INCLUDEDIR)/Menu.h $(INCLUDEDIR)/MenuMain.h $(INCLUDEDIR)/Generator.h $(INCLUDEDIR)/Editor.h
+	$(CC) $(CFLAGS) -c $(SOURCESDIR)/MenuMain.cpp -o $(BUILDDIR)/MenuMain.o
+
+Editor.o: $(INCLUDEDIR)/Editor.h
+	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Editor.cpp -o $(BUILDDIR)/Editor.o
 
 .PHONY:clean
 clean:

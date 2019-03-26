@@ -11,7 +11,7 @@
 Map::Map(Size size, Difficulty difficulty){
   this->size = size;
   this->difficulty = difficulty;
-  area = size*size;
+  this->area = size*size;
 
   board = (Tile**)std::malloc(size * sizeof(Tile*));
 
@@ -33,6 +33,10 @@ Map::~Map(){
   }
 
   std::free(board);
+}
+
+Size Map::getSize(){
+  return this->size;
 }
 
 std::string Map::toString(){

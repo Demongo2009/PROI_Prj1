@@ -3,21 +3,26 @@
 
 #include <iostream>
 #include <string>
+#include <cstdarg>
+#include "../include/Enums.h"
+#include "../include/Map.h"
 
 class Menu{
 protected:
-  string* selectionTexts;
+  std::string* selectionTexts;
   int selectionTextsAmount;
   int pointer;
+  va_list ap;
 public:
-  Menu(int, std::string ...);
+  Menu(int, char[100] ...);
+  Menu(int, va_list ap1);
   ~Menu();
-  string toString();
+  std::string toString();
   void pointerMoveUpDown(Direction);
   void pointerMoveTo(int);
   int getPointer();
-  void readInt(int);
-  void readChar();
+  void readInt(int&);
+  friend class MenuMain;
 };
 
 #endif

@@ -3,24 +3,46 @@
 #include <string>
 #include <sstream>
 #include <cstdarg>
+#include "../include/Menu.h"
 
-Menu::Menu(int argAmount, std::string ...){
+// Menu::Menu(int argAmount, std::string ...){
+//   pointer = 0;
+//   selectionTextsAmount = argAmount;
+//   selectionTexts = (std::string*)std::malloc(argAmount * sizeof(std::string));
+//   va_list ap;
+//   va_start(ap,argAmount);
+//   for(int i=0;i<argAmount;++i){
+//     selectionTexts[i]= va_arg(ap,std::string);
+//   }
+//   va_end(ap);
+// }
+Menu::Menu(int argAmount, char[100] ...):Menu(argAmount, (va_start(ap,argAmount),ap)){
   pointer = 0;
   selectionTextsAmount = argAmount;
-  selectionTexts = (string*)std::malloc(argAmount * sizeof(string));
+  selectionTexts = (char*)std::malloc(argAmount * sizeof(char));
   va_list ap;
   va_start(ap,argAmount);
-  for(int i=0;i<n;++i){
+  for(int i=0;i<argAmount;++i){
     selectionTexts[i]= va_arg(ap,std::string);
   }
   va_end(ap);
 }
 
-~Menu(){
+Menu::Menu(int argAmount, va_list ap){
+  pointer = 0;
+  selectionTextsAmount = argAmount;
+  selectionTexts = (char*)std::malloc(argAmount * sizeof(char);
+  for(int i=0;i<argAmount;++i){
+    selectionTexts[i]= va_arg(ap,std::string);
+  }
+  va_end(ap);
+}
+
+Menu::~Menu(){
   std::free(selectionTexts);
 }
 
-string Menu::toString(){
+std::string Menu::toString(){
   std::stringstream ss;
 
   for(int i=0; i<selectionTextsAmount; ++i){
@@ -67,7 +89,7 @@ int Menu::getPointer(){
   return pointer;
 }
 
-void Menu::readIntOrEnter(int &i){
+void Menu::readInt(int &i){
   std::cin>>i;
   while(std::cin.fail()){
     std::cin.clear();
