@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <string>
+#include <sstream>
 #include "../include/Map.h"
 #include "../include/Enums.h"
 #include "../include/Tile.h"
@@ -9,7 +11,7 @@
 Map::Map(Size size, Difficulty difficulty){
   this->size = size;
   this->difficulty = difficulty;
-  area = size*size;
+  this->area = size*size;
 
   board = (Tile**)std::malloc(size * sizeof(Tile*));
 
@@ -33,22 +35,32 @@ Map::~Map(){
   std::free(board);
 }
 
-void Map::printMap(){
+Size Map::getSize(){
+  return this->size;
+}
+
+std::string Map::toString(){
+  std::stringstream ss;
   for(int i=0; i<size+2; ++i){
-    std::cout<<'Z';
+    ss<<"Z";
   }
-  std::cout<<std::endl;
+  ss<<"\n";
 
   for(int i=0; i<size; ++i){
-    std::cout<<'Z';
+    ss<<"Z";
     for(int j=0; j<size; ++j){
-      std::cout<<board[i][j];
+      ss<<board[i][j];
     }
-    std::cout<<'Z'<<std::endl;
+    ss<<"Z\n";
   }
 
   for(int i=0; i<size+2; ++i){
-    std::cout<<'Z';
+    ss<<"Z";
   }
-  std::cout<<std::endl;
+  ss<<"\n";
+  return ss.str();
+}
+
+void Map::changeTile(int x, int y, TileType tileType){
+  board[y][x].changeTileType(tileType);
 }
