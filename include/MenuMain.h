@@ -9,7 +9,7 @@
 class MenuMain: public Menu{
 
 public:
-  MenuMain(int, char[100] ...);
+  MenuMain(int, std::string);
   void executePointerCommand();
   void generate();
   void edit();

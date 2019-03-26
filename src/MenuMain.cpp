@@ -9,7 +9,7 @@
 #define EDITOR_OPTIONS 3
 #define TILE_TYPE_AMOUNT 5
 
-MenuMain::MenuMain(int argAmount, char[100] ...):Menu(argAmount, (va_start(ap,argAmount),ap)){
+MenuMain::MenuMain(int argAmount, std::string text):Menu(argAmount, text){
 
 }
 
@@ -42,13 +42,13 @@ bool MenuMain::wantToEdit(Map* map){
   std::cout<<map->toString();
   std::cout<<"Do you want to edit map?\n";
   Menu yesNo = Menu(2,
-    "[1] Yes",
-    "[2] No");
+    "[1] Yes\n[2] No");
+  std::cout<<yesNo.toString();
 
   int option;
   readInt(option);
   yesNo.pointerMoveTo(option-1);
-  std::cout<<yesNo.toString();
+
 
   switch(yesNo.getPointer()){
     case 0:
@@ -65,9 +65,7 @@ void MenuMain::editMap(Map* map){
   std::cout<<map->toString();
 
   Menu editorMenu = Menu(EDITOR_OPTIONS,
-    "[1] Go to tile [x,y]",
-    "[2] Change selected tile to [BRICKS,BUSHES,ICE,WATER,EMPTY]",
-    "[3] Quit editing and exit");
+    "[1] Go to tile [x,y]\n[2] Change selected tile to [BRICKS,BUSHES,ICE,WATER,EMPTY]\n[3] Quit editing and exit");
   while(1){
     std::cout<<editorMenu.toString();
     std::cout<<"Selected tile ["<<editor.getPointerX()<<", "<<editor.getPointerY()<<"]\n";
@@ -75,13 +73,15 @@ void MenuMain::editMap(Map* map){
     int option;
     readInt(option);
     editorMenu.pointerMoveTo(option-1);
-    std::cout<<editorMenu.toString();
+
 
     switch (editorMenu.getPointer()) {
       case 0:
         int x;
+        std::cout<<"Enter x:\n";
         readInt(x);
         int y;
+        std::cout<<"Enter y:\n";
         readInt(y);
         editor.setPointerTo(x,y);
         break;
@@ -100,17 +100,13 @@ void MenuMain::changeSelectedTile(Editor editor){
   std::cout<<"Selected tile ["<<editor.getPointerX()<<", "<<editor.getPointerY()<<"]\n";
 
   Menu selectTile = Menu(TILE_TYPE_AMOUNT,
-    "[1] Change to BRICKS",
-    "[2] Change to BUSHES",
-    "[3] Change to ICE",
-    "[4] Change to WATER",
-    "[5] Change to EMPTY");
+    "[1] Change to BRICKS\n[2] Change to BUSHES\n[3] Change to ICE\n[4] Change to WATER\n[5] Change to EMPTY");
   std::cout<<selectTile.toString();
 
   int option;
   readInt(option);
   selectTile.pointerMoveTo(option-1);
-  std::cout<<selectTile.toString();
+
 
   switch (selectTile.getPointer()) {
     case  0:
@@ -134,15 +130,13 @@ void MenuMain::changeSelectedTile(Editor editor){
 
 Difficulty MenuMain::selectDifficulty(){
   Menu selectDifficulty = Menu(DIFFICULTY_AMOUNT,
-    "[1] Create EASY difficulty map",
-    "[2] Create NORMAL difficulty map",
-    "[3] Create HARD difficulty map");
+    "[1] Create EASY difficulty map\n[2] Create NORMAL difficulty map\n[3] Create HARD difficulty map");
   std::cout<<selectDifficulty.toString();
   int option=0;
 
   readInt(option);
   selectDifficulty.pointerMoveTo(option-1);
-  std::cout<<selectDifficulty.toString();
+
 
   Difficulty generatorDifficulty;
   switch (selectDifficulty.getPointer()) {
@@ -161,15 +155,13 @@ Difficulty MenuMain::selectDifficulty(){
 
 Size MenuMain::selectSize(){
   Menu selectSize = Menu(DIFFICULTY_AMOUNT,
-    "[1] Create SMALL size map",
-    "[2] Create MEDIUM size map",
-    "[3] Create LARGE size map");
+    "[1] Create SMALL size map\n[2] Create MEDIUM size map\n[3] Create LARGE size map");
   std::cout<<selectSize.toString();
   int option=0;
 
   readInt(option);
   selectSize.pointerMoveTo(option-1);
-  std::cout<<selectSize.toString();
+
 
   Size generatorSize;
   switch (selectSize.getPointer()) {

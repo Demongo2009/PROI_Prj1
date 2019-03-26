@@ -73,9 +73,11 @@ Generator::Generator(Size size, Difficulty difficulty){
     case NORMAL:
       this->icesForSize+=3;
       this->watersForSize+=3;
+      this->bricksForSize+=2;
     case HARD:
       this->icesForSize+=5;
-      this->icesForSize+=5;            
+      this->watersForSize+=5;
+      this->bricksForSize+=3;
   }
 }
 

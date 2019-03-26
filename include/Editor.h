@@ -7,8 +7,8 @@
 
 class Editor{
   Map *map;
-  int pointerX;
-  int pointerY;
+  int pointerX=0;
+  int pointerY=0;
 public:
   Editor(Map* map):map(map){};
   void setPointerTo(int, int);

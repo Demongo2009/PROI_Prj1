@@ -9,14 +9,12 @@
 
 class Menu{
 protected:
-  std::string* selectionTexts;
+  std::string selectionTexts;
   int selectionTextsAmount;
   int pointer;
-  va_list ap;
 public:
-  Menu(int, char[100] ...);
-  Menu(int, va_list ap1);
-  ~Menu();
+  Menu(int, std::string);
+  // ~Menu();
   std::string toString();
   void pointerMoveUpDown(Direction);
   void pointerMoveTo(int);
