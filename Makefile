@@ -10,6 +10,11 @@ OBJECTS = $(BUILDDIR)/Main.o $(BUILDDIR)/Map.o $(BUILDDIR)/Generator.o $(BUILDDI
 
 $(TARGET): Main.o Map.o Generator.o Tile.o Menu.o MenuMain.o Editor.o
 	$(CC) $(CFLAGS) $(OBJECTS) -o bin/$(TARGET)
+# test: Map.o Generator.o Tile.o Menu.o MenuMain.o Editor.o Test.o
+# 	$(CC) $(CFLAGS) $(BUILDDIR)/Map.o $(BUILDDIR)/Generator.o $(BUILDDIR)/Tile.o $(BUILDDIR)/Menu.o $(BUILDDIR)/MenuMain.o $(BUILDDIR)/Editor.o $(BUILDDIR)/Test.o -o bin/test
+
+Test.o: $(INCLUDEDIR)/Editor.h $(INCLUDEDIR)/Enums.h $(INCLUDEDIR)/Generator.h $(INCLUDEDIR)/Map.h $(INCLUDEDIR)/Menu.h $(INCLUDEDIR)/MenuMain.h $(INCLUDEDIR)/Tile.h
+	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Tests.cpp -o $(BUILDDIR)/Test.o
 
 Main.o: $(INCLUDEDIR)/Menu.h $(INCLUDEDIR)/MenuMain.h
 	$(CC) $(CFLAGS) -c $(SOURCESDIR)/Main.cpp -o $(BUILDDIR)/Main.o
